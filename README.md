@@ -52,32 +52,16 @@ Set `LLM_PROVIDER` in `.env`:
 
 | Provider | Cost | Key from | Notes |
 |---|---|---|---|
-| `anthropic` | Paid (prepaid credits) | console.anthropic.com | Claude, best quality for extraction and drafting |
 | `groq` | Free tier | console.groq.com | Open models (e.g. Llama), very fast, rate-limited |
 | `gemini` | Free tier | aistudio.google.com | Gemini Flash models, rate-limited; free-tier data may be used by Google to improve products |
 
 Groq and Gemini are called through their OpenAI-compatible endpoints using only the Python standard library. No extra packages are needed.
 
-## Project structure
+## Project Dashboard Preview
 
-```
-freightflow/
-  config.py      settings from .env
-  llm.py         Claude wrapper: structured JSON output via tool-use, retries
-  emails.py      triage, tracking lookup, reply drafting (+ mock fallback)
-  documents.py   PDF extraction + cross-document checks
-  pipeline.py    end-to-end flow for one email
-  db.py          SQLite audit log + review queue
-  dashboard.py   self-contained HTML impact dashboard
-api.py           FastAPI service that n8n / Make / Zapier / Power Automate call
-run_demo.py      process the sample inbox and build the dashboard
-review.py        human review CLI (approve / edit / reject)
-evaluate.py      accuracy against ground truth
-n8n/freightflow_workflow.json   importable n8n workflow
-sample_data/     10 sample emails, 5 shipping PDFs, tracking CSV, ground truth
-scripts/make_sample_docs.py     regenerates the sample PDFs
-tests/test_core.py
-```
+<img width="1899" height="915" alt="s_ai" src="https://github.com/user-attachments/assets/d927e83c-505f-4018-b411-0e6f01ba2d84" />
+
+
 
 ## Run it
 
@@ -109,9 +93,3 @@ uvicorn api:app --reload        # API at http://localhost:8000/docs
 - **Mock mode.** The whole pipeline runs and can be demoed with no API key, which also makes it cheap to test.
 - **Python brain, no-code glue.** The logic lives in a tested Python service. n8n handles the connectors (Gmail, Sheets) and can be swapped for Make, Zapier or Power Automate.
 
-## Next steps
-
-- Scanned PDFs: send the PDF image directly to Claude, which reads PDFs and images natively.
-- Connect the real TMS / carrier tracking APIs in place of the CSV.
-- Auto-suggest rates from the company's rate sheet (Excel) for quote requests.
-- A weekly report email built from the dashboard metrics.
